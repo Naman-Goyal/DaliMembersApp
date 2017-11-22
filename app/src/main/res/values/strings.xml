@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DaliMembers</string>
+
+    <string name="member_pic_descr">Picture of this DALI member</string>
+</resources>
