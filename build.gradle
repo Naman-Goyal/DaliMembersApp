@@ -2,10 +2,14 @@
 
 buildscript {
     ext.kotlin_version = '1.1.60'
+    ext.anko_version = '0.10.3'
 
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://maven.google.com'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
