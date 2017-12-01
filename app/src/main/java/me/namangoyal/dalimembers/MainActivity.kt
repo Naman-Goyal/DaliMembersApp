@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.app.FragmentManager
 import android.app.Fragment
 import android.content.Intent
-import android.preference.PreferenceManager
 import android.support.v13.app.FragmentPagerAdapter
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.ViewPager
+import android.util.Log
+import android.view.View
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.jetbrains.anko.longToast
+import java.io.ByteArrayOutputStream
+import java.io.ObjectOutputStream
 
 class MainActivity: FragmentActivity() {
 
@@ -23,37 +26,34 @@ class MainActivity: FragmentActivity() {
 
     var members: Array<DaliMember>? = null
 
+    private lateinit var mViewPager: ViewPager
+    private lateinit var mAdapter: TabAdapter
+
+    var ready = false //whether the list is ready
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //Init
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Assign global vars
+        //Assign important vars
         val tabStrip: SlidingTabLayout = findViewById(R.id.tabs)
-        val mViewPager: ViewPager = findViewById(R.id.pager)
-        val adapter = TabAdapter(fragmentManager)
+        mViewPager = findViewById(R.id.pager)
+        mAdapter = TabAdapter(fragmentManager)
 
         //Add tabs
         tabs.add(MemberListFragment())
-        tabs.add(ProfileFragment())
         tabs.add(MapFragment())
 
         //Assign adapter (see below)
-        mViewPager.adapter = adapter
+        mViewPager.adapter = mAdapter
 
         //Set tab to evenly distribute, and then connect it to the viewPager
         tabStrip.setDistributeEvenly(true)
         tabStrip.setViewPager(mViewPager)
 
         //Now we'll get the member list so that it can be accessed by the fragments
-
-        //First, make sure that the cat list has not already been saved to internal storage
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-
-        //Make the URL
         val listUrl = "http://mappy.dali.dartmouth.edu/members.json"
-
-        //Open volley req (end result of this is saving the cat list to internal storage)
         Volley.newRequestQueue(this)
                 .add(
                         object : StringRequest(Request.Method.GET, listUrl,
@@ -63,9 +63,7 @@ class MainActivity: FragmentActivity() {
                                     members = gson.fromJson(response,Array<DaliMember>::class.java)
 
                                     //put that this list is ready
-                                    prefs.edit()
-                                            .putBoolean(READY_ACTION,true)
-                                            .apply()
+                                    ready = true
 
                                     //then send a broadcast
                                     val intent = Intent()
@@ -73,6 +71,16 @@ class MainActivity: FragmentActivity() {
                                     LocalBroadcastManager
                                             .getInstance(this)
                                             .sendBroadcast(intent)
+
+                                    val toMapID = this.intent.getIntExtra("id",-1)
+                                    Log.d("FLOW",toMapID.toString())
+
+                                    if (toMapID!=-1) {
+                                        Log.d("FLOW",toMapID.toString())
+                                        (mAdapter.getItem(1) as MapFragment).zoomToID = toMapID
+                                        mViewPager.currentItem = 1
+                                        mAdapter.notifyDataSetChanged()
+                                    }
                                 },
                                 Response.ErrorListener { error -> // Handle error cases
                                     when (error) {
@@ -98,6 +106,20 @@ class MainActivity: FragmentActivity() {
                             }
                         }
                 )
+
+        mViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener(){
+            //if we move to the List Fragment, zoom out in the map fragment
+            override fun onPageSelected(position: Int) {
+                if (position==0) (mAdapter.getItem(1) as MapFragment).zoomOut()
+                super.onPageSelected(position)
+            }
+        })
+    }
+
+    override fun onDestroy() {
+        ready = false
+        Log.d("FLOW_IN_DESTROY",ready.toString())
+        super.onDestroy()
     }
 
     /**
@@ -109,22 +131,49 @@ class MainActivity: FragmentActivity() {
 
         override fun getItem(position: Int): Fragment = tabs[position]
 
-        // Four fields for tab
+        // Two fields for tab
         override fun getPageTitle(position: Int): CharSequence? =
                 when (position) {
                     0 -> "List"
-                    1 -> "Profile"
-                    2 -> "Map"
+                    1 -> "Map"
                     else -> null
                 }
     }
 
-    override fun onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .clear()
-                .apply()
-        
-        super.onDestroy()
+    /**
+     * Called by MemberListFragment
+     * Calls openProfile(Int)
+     */
+    fun openProfile(v: View) {
+        openProfile(v.tag as Int)
+    }
+
+    /**
+     * Called by MapFragment
+     * Opens ProfileActivity for that id
+     */
+    private fun openProfile(id: Int) {
+        val baos = ByteArrayOutputStream()
+        ObjectOutputStream(baos).writeObject(members!![id]) //get the member as a byte array
+
+        val i = Intent(this,ProfileActivity::class.java)
+        i.putExtra("member",baos.toByteArray()) //put it in as an extra
+        i.putExtra("id",id)
+
+        startActivity(i) //start the profile activity
+    }
+
+    /**
+     * Called when user clicks on a member in the MemberListFragment
+     * sets toMapID, a public var, to the member's ID and starts the map fragment
+     */
+    fun mapZoom(v: View) {
+
+        //zoom in the map
+        (mAdapter.getItem(1) as MapFragment).zoomToMember(v.tag as Int)
+
+        //send to map frag
+        mViewPager.currentItem = 1
+        mAdapter.notifyDataSetChanged()
     }
 }

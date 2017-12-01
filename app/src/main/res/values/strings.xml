@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">DaliMembers</string>
 
+    <string name="not_ready">Getting Ready!</string>
+
     <string name="member_pic_descr">Picture of this DALI member</string>
+    <string name="member_name">Name</string>
+    <string name="member_msg">Message</string>
+    <string name="learn_more">Learn more about me!</string>
+    <string name="map_pic_descr">Click here to see where I am!</string>
+
+    <string name="profile_pic_descr">Picture of DALI member</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_msg">Message</string>
+    <string name="profile_link">My webpage</string>
+    <string name="profile_terms">I\'m on campus during</string>
+    <string name="profile_project">I work on</string>
+    <string name="profile_map_explanation">Click to see where I\'m from!</string>
+    <string name="profile_map_button_descr">Button to click to see where DALI member is from</string>
 </resources>

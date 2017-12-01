@@ -11,8 +11,8 @@
         android:contentDescription="@string/member_pic_descr"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:scaleType="fitCenter"
         android:padding="10dp"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -21,9 +21,10 @@
         android:id="@+id/memberName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:layout_margin="10dp"
+        android:text="@string/member_name"
         android:textSize="30sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/memberPic"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,9 +33,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
+        android:text="@string/member_msg"
         app:layout_constraintStart_toEndOf="@+id/memberPic"
         app:layout_constraintTop_toBottomOf="@+id/memberName" />
+
+    <ImageView
+        android:id="@+id/memberMapButton"
+        android:contentDescription="@string/map_pic_descr"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/rsz_user_marker"
+        android:scaleType="fitCenter"
+        android:onClick="mapZoom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/memberLearnMoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/learn_more"
+        android:textColor="@color/colorPrimaryDark"
+        android:onClick="openProfile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/memberMessage" />
 
 </android.support.constraint.ConstraintLayout>

@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA0HqkTaLH3lgidLvfYKNujfmuZPcG76yM"/>
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -20,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>

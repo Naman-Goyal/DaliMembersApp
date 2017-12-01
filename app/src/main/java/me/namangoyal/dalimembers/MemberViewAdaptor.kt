@@ -25,6 +25,8 @@ class MemberViewAdaptor(private val ctx: Context, private val memberArray: Array
         val pic: ImageView = v.findViewById(R.id.memberPic)
         val name: TextView = v.findViewById(R.id.memberName)
         val message: TextView = v.findViewById(R.id.memberMessage)
+        val mapButton: ImageView = v.findViewById(R.id.memberMapButton)
+        val learnButton: TextView = v.findViewById(R.id.memberLearnMoreButton)
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -42,7 +44,7 @@ class MemberViewAdaptor(private val ctx: Context, private val memberArray: Array
             holder = row.tag as ViewHolder //get holder from its tag
         }
 
-        //Get the cat that is at this position
+        //Get the member that is at this position
         val member = getItem(position) as DaliMember
 
         //Set all the fields in the view
@@ -51,6 +53,10 @@ class MemberViewAdaptor(private val ctx: Context, private val memberArray: Array
 
         holder.name.text = member.name
         holder.message.text = member.message
+
+        //buttons store important info in tags
+        holder.learnButton.tag = memberArray.indexOf(member)
+        holder.mapButton.tag = memberArray.indexOf(member)
 
         return row
     }

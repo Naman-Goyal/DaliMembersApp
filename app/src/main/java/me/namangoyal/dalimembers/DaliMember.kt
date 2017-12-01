@@ -1,5 +1,9 @@
 package me.namangoyal.dalimembers
 
+import java.io.Externalizable
+import java.io.ObjectInput
+import java.io.ObjectOutput
+
 /**
  * Created by Naman
  *
@@ -7,15 +11,38 @@ package me.namangoyal.dalimembers
  *
  * Kotlin Data classes are classes that autogenerate toString methods, getters and setters
  */
-data class DaliMember (
-        val name : String,
-        val iconUrl : String,
-        val url : String,
-        val message : String,
-        val lat_long : FloatArray,
-        val terms_on : Array<String>,
-        val project : Array<String>
-) {
+data class DaliMember(
+        var name : String,
+        var iconUrl : String,
+        var url : String,
+        var message : String,
+        var lat_long : DoubleArray,
+        var terms_on : Array<String>,
+        var project : Array<String>
+) : Externalizable {
+
+    constructor():this("","","","",DoubleArray(2),Array<String>(0,{it.toString()}),Array<String>(0,{it.toString()}))
+
+    override fun readExternal(input: ObjectInput) {
+        name = input.readObject() as String
+        iconUrl = input.readObject() as String
+        url = input.readObject() as String
+        message = input.readObject() as String
+        lat_long = input.readObject() as DoubleArray
+        terms_on = input.readObject() as Array<String>
+        project = input.readObject() as Array<String>
+    }
+
+    override fun writeExternal(out: ObjectOutput) {
+        out.writeObject(name)
+        out.writeObject(iconUrl)
+        out.writeObject(url)
+        out.writeObject(message)
+        out.writeObject(lat_long)
+        out.writeObject(terms_on)
+        out.writeObject(project)
+    }
+
     override fun equals(other: Any?): Boolean {
         if (other==null) return false
         if (other !is DaliMember) return false
