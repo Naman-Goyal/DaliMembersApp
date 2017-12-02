@@ -45,7 +45,7 @@ class NavViewAdaptor(private val context: Context): BaseAdapter() {
     }
 
     inner class ViewHolder(v: View) {
-        val name = v.findViewById<TextView>(R.id.toggleText)
-        val img = v.findViewById<ImageView>(R.id.toggleImage)
+        val name: TextView = v.findViewById(R.id.toggleText)
+        val img: ImageView = v.findViewById(R.id.toggleImage)
     }
 }

@@ -28,10 +28,11 @@ member that you wish to see.
 
 **This app requires Android N at minimium (SDK 23)**
 
-A signed APK is in the top level folder if you wish to directly put that on your phone
+`dali_members.apk` is in the top level folder if you wish to directly put that on your connected
+phone or emulator using the adb function `adb install dali_members.apk`
 
 Otherwise, you could build this project with Android Studio and use that to put this app on your
-phone
+phone or emulator
 
 ## Creator
 

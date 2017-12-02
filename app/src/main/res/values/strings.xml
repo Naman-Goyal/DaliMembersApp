@@ -17,4 +17,6 @@
     <string name="profile_project">I work on</string>
     <string name="profile_map_explanation">Click to see where I\'m from!</string>
     <string name="profile_map_button_descr">Button to click to see where DALI member is from</string>
+
+    <string name="toggle_pic_descr">Displays whether or not this info field is visible</string>
 </resources>
