@@ -44,18 +44,14 @@ data class DaliMember(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other==null) return false
-        if (other !is DaliMember) return false
-
-        if (name != other.name) return false
-        if (iconUrl != other.iconUrl) return false
-        if (url != other.url) return false
-        if (message != other.message) return false
-        if (!(other.lat_long contentEquals lat_long)) return false
-        if (!(other.terms_on contentEquals terms_on)) return false
-        if (!(other.project contentEquals project)) return false
-
-        return true
+        return  (other is DaliMember) &&                      //non-nullable DaliMember
+                (name==other.name) &&                         //same name
+                (iconUrl == other.iconUrl) &&                 //same icon
+                (url == other.url) &&                         //same url
+                (message == other.message) &&                 //same message
+                (other.lat_long contentEquals lat_long) &&    //same location
+                (other.terms_on contentEquals terms_on) &&    //same terms on
+                (other.project contentEquals project)         //same project
     }
 
     override fun hashCode(): Int {
