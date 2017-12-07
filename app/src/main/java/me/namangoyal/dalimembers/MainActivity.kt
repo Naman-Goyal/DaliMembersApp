@@ -8,7 +8,6 @@ import android.support.v13.app.FragmentPagerAdapter
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.View
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
@@ -73,10 +72,8 @@ class MainActivity: FragmentActivity() {
                                             .sendBroadcast(intent)
 
                                     val toMapID = this.intent.getIntExtra("id",-1)
-                                    Log.d("FLOW",toMapID.toString())
 
                                     if (toMapID!=-1) {
-                                        Log.d("FLOW",toMapID.toString())
                                         (mAdapter.getItem(1) as MapFragment).zoomToID = toMapID
                                         mViewPager.currentItem = 1
                                         mAdapter.notifyDataSetChanged()
@@ -118,7 +115,6 @@ class MainActivity: FragmentActivity() {
 
     override fun onDestroy() {
         ready = false
-        Log.d("FLOW_IN_DESTROY",ready.toString())
         super.onDestroy()
     }
 

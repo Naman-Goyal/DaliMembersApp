@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.content.LocalBroadcastManager
-import android.util.Log
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapFragment
@@ -63,32 +61,16 @@ class MapFragment : MapFragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowCli
      * ProfileActivity for that member
      */
     override fun onInfoWindowClick(p0: Marker) {
-        Log.d("MARKER","clicked")
-        Log.d("MARKER", prev_clicked.toString())
-        if (prev_clicked) { //if it's been clicked less than one second ago
-            val id = p0.tag as Int
-            val member = (activity as MainActivity).members!![id]
-            val baos = ByteArrayOutputStream()
-            ObjectOutputStream(baos).writeObject(member) //write the member as a byte array
+        val id = p0.tag as Int
+        val member = (activity as MainActivity).members!![id]
+        val baos = ByteArrayOutputStream()
+        ObjectOutputStream(baos).writeObject(member) //write the member as a byte array
 
-            val i = Intent(activity,ProfileActivity::class.java)
-            i.putExtra("member",baos.toByteArray()) //put it in as an extra
-            i.putExtra("id",id)
+        val i = Intent(activity,ProfileActivity::class.java)
+        i.putExtra("member",baos.toByteArray()) //put it in as an extra
+        i.putExtra("id",id)
 
-            startActivity(i) //start profile activity
-        }
-        else { //if not
-            prev_clicked = true //set prev_clicked
-            Log.d("MARKER","here")
-            Log.d("MARKER", prev_clicked.toString())
-
-            val handler = Handler()
-            handler.postDelayed({prev_clicked=false},1000) //in 1 second set prev_clicked back to false
-        }
-    }
-
-    companion object {
-        var prev_clicked = false
+        startActivity(i) //start profile activity
     }
 
     /**
