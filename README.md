@@ -15,7 +15,7 @@ When you open the app, you find a list of all the people currently working at DA
 the people that work at DALI right now
 * If you get here by clicking on someone's specific map marker icon, it zooms directly to their 
 position
-* Clicking on a marker shows you an info box with their name. Double clicking this info box takes
+* Clicking on a marker shows you an info box with their name. Clicking this info box takes
 you to their profile.
 
 ### Functionality of the Profile View
